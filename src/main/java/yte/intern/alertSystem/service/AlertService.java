@@ -15,7 +15,11 @@ public class AlertService {
 
     public void addAlert(Alert alert){
 
-        alert.setUrl("http://"+alert.getUrl());
+        if(!alert.getUrl().contains("Http://"+alert.getUrl())){
+
+            alert.setUrl("http://"+alert.getUrl());
+
+        }
 
         this.alertRepository.save(alert);
 
@@ -39,6 +43,12 @@ public class AlertService {
 
    }
    public void updateAlert(Alert alert){
+
+        if(!alert.getUrl().contains("Http://"+alert.getUrl())){
+
+            alert.setUrl("http://"+alert.getUrl());
+
+        }
 
         Alert alert1 = alertRepository.getById(alert.getId());
 
