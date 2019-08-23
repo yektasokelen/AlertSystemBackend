@@ -28,7 +28,7 @@ public class ScheduledService {
 
             if(alert.getLeftperiod()==0L){
                 alert.setLeftperiod(alert.getPeriod());
-                asycnTaskService.webSocketCheckWebsite(alert,localDateTime);
+                asycnTaskService.aSycnTask(alert,localDateTime);
 
             }
             else{

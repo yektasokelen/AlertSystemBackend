@@ -23,6 +23,7 @@ public class Situation {
     private Long id;
     private LocalDateTime alertDate;
     private int success;
+    private float goBackTime;
 
 
 

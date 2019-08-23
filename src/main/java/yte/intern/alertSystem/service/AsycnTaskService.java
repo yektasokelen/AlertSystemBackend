@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 import org.springframework.web.client.RestTemplate;
 import yte.intern.alertSystem.model.Alert;
 import yte.intern.alertSystem.model.Situation;
@@ -24,29 +25,38 @@ public class AsycnTaskService {
     private final RestTemplate restTemplate;
     private final AlertRepository alertRepository;
 
-    /*@Async
-    public void aSycnTask(Alert alert, LocalDateTime localDateTime){
+    @Async
+    public void aSycnTask(Alert alert, LocalDateTime localDateTime) {
 
-    try{
+        StopWatch timer = new StopWatch();
 
-        ResponseEntity<String> result = restTemplate.exchange(alert.getUrl(), alert.getMethod(), null, String.class);
+        timer.start();
 
-        Situation situation = new Situation(null,localDateTime,1);
 
-        alert.getSituations().add(situation);
+        try {
 
-    }
-        catch(Exception e){
+            ResponseEntity<String> result = restTemplate.exchange(alert.getUrl(), alert.getMethod(), null, String.class);
 
-        Situation situation = new Situation(null,localDateTime,0);
+            timer.stop();
 
-        alert.getSituations().add(situation);
+            Situation situation = new Situation(null, localDateTime, 1, timer.getLastTaskTimeMillis());
+
+            alert.getSituations().add(situation);
+
+        } catch (Exception e) {
+
+            timer.stop();
+
+            Situation situation = new Situation(null, localDateTime, 0, timer.getLastTaskTimeMillis());
+
+            alert.getSituations().add(situation);
 
         }
 
-    alertRepository.save(alert);
-*/
+        alertRepository.save(alert);
 
+
+    /*
     @Async
     public void webSocketCheckWebsite(Alert alert, LocalDateTime localDateTime) throws IOException {
 
@@ -71,8 +81,7 @@ public class AsycnTaskService {
         alertRepository.save(alert);
 
     }
-    
+    */
 
-
-
+    }
 }
